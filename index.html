@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vermont Book Stores</title>
+  <link rel="stylesheet" href="jquery-jvectormap-2.0.5.css" type="text/css" media="screen"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="jquery.js"></script>
+  <script src="jquery-jvectormap-2.0.5.min.js"></script>
+  <script src="jquery-jvectormap-data-us-vt-lcc-en.js"></script>
+  <script src="bookstores.js"></script>
+  
+<script>var temparray = [];
+
+for (mark in markers) {
+  temparray.push(markers[mark].count);
+}
+
+bookstores = temparray;
+
+$(function(){
+  var map;
+  
+  map = new jvm.Map({
+    container: $('#us-map'),
+    map: 'us-vt_lcc_en',
+    regionsSelectable: false,
+    markersSelectable: false,
+    markers: markers,
+    markerStyle: {
+      initial: {
+        fill: '#4DAC26'
+      },
+      selected: {
+        fill: '#CA0020'
+      }
+    },
+    regionStyle: {
+      initial: {
+        fill: '#B8E186'
+      },
+      selected: {
+        fill: '#F4A582'
+      }
+    },
+    series: {
+      markers: [{
+        attribute: 'r',
+        scale: [1, 1],
+        values: bookstores
+      }]
+    },
+    onMarkerTipShow: function(event, label, index){
+      label.html(
+        '<b>Store: ' + markers[index].Address +'</b><br />'+
+        '<b>Phone: ' + markers[index].Phone + '</b><br />'+
+        '<b>Website: ' + markers[index].Website+ '</b><br />'+
+        '<b>Type: ' + markers[index].Type+ '</b><br />'+
+        '<img src="' + markers[index].Photo + '"style="max-height: 200px;">'+
+        '<a href="' + markers[index].Website + '">'
+
+      );
+    },
+    onMarkerClick: function(event, index) {
+                     window.open((markers[index].Website));
+                  }
+  });
+  });
+</script>
+</head>
+<body>
+<div class="container"> 
+<div id="us-map" style="width: 300; height: 600px"></div>
+</div>
+  </script>
+</body>
+</html>
